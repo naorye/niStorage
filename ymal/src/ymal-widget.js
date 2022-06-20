@@ -4,11 +4,12 @@ document.addEventListener('niStorage:ready', async function (event) {
     console.log("before get")
     let history = await storage.getItem("ni-history") || [];
     console.log("after get")
+    const verticalId = window?.eventTrackerAttributes?.userParams?.verticalId || '5aba2aae309d88000126ff9f';
     history.push({
         host: window.location.host,
         href: window.location.href,
         title: window?.naturalint_tag_data?.['dom.title'],
-        vertical: window?.eventTrackerAttributes?.userParams?.verticalId,
+        verticalId,
         date: new Date(),
         ni_platform: window.ni_platform,
         ni_channel_type: window.ni_channel_type,
@@ -19,9 +20,36 @@ document.addEventListener('niStorage:ready', async function (event) {
     })
     storage.setItem("ni-history", history);
     console.log("event", event)
+    const historyVerticalsIds = [];
+    for (const {verticalId: historyVerticalId} of history) {
+        if (!historyVerticalsIds.includes(historyVerticalId) && historyVerticalId) {
+            historyVerticalsIds.push(historyVerticalId)
+        }
+    }
+
+    const response = fetch('http://localhost/rts_recommend', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            vertical_id: verticalId,
+            history_verticals_ids: historyVerticalsIds
+        })
+    })
+    // response.then(response => response.json())
+    //     .then(data => {
+    //         console.log('Success:', data);
+    //     })
+    //     .catch((error) => {
+    //         console.error('Error:', error);
+    //     })
+    const responseJson = await (await response).json();
     let html = "<div style=\'position: fixed; bottom: 0; right: 0; z-index: 9999999; width: 331px; background: #FFFFFF; border-radius: 5px;\'>\n    " +
         "<h3 style='font-style: normal;font-weight: 600;font-size: 24px;line-height: 29px;color: #000000; text-align: center;'>You may also like</h3>"
-    for (const {link, description} of [{link: 'http://test.com', description: 'Best Meal Delivery Sites'}, {link: 'dd', description: 'hh'}]) {
+    for (const description of responseJson.vertical_names) {
+        const link = 'http://ni.com'
         html += "<div style='margin: 10px'>" +
             description +
             "<a href='" + link +

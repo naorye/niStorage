@@ -1,0 +1,1 @@
+run chrome with disabled cors ```open -na Google\ Chrome --args --disable-web-security --user-data-dir=$HOME/profile-folder-name```

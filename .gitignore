@@ -1,1 +1,3 @@
 /.idea/
+/ymal/node_modules/
+/ymal/package-lock.json
