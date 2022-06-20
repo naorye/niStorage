@@ -1,4 +1,6 @@
-## Runnint locally
+# niStorage
+
+## Running locally
 
 `npm run serve` will create local server under port 3000
 
