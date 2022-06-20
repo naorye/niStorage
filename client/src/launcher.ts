@@ -5,6 +5,7 @@ declare global {
     niStorage: {
       setItem: (key: string, value: unknown) => void;
       getItem: (key: string) => Promise<unknown>;
+      ready: Promise<unknown>
     };
   }
 }
@@ -14,6 +15,11 @@ const iframeSrc = `http://localhost:3000/inner.html`;
 function run() {
   const iframe = document.createElement("iframe");
   iframe.src = iframeSrc;
+  const ready = new Promise(resolve => {
+    iframe.addEventListener('load', event=>{
+      resolve('ready');
+    })
+  });
 
   document.body.appendChild(iframe);
 
@@ -42,7 +48,7 @@ function run() {
     iframe.contentWindow.postMessage(JSON.stringify(message), "*");
   }
 
-  window.niStorage = { setItem, getItem };
+  window.niStorage = { setItem, getItem, ready };
 }
 
 run();

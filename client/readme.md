@@ -9,7 +9,16 @@
 1. Open a website and inject the followint installation script:
 
 ```
-function install(){const t=document.createElement("script");t.src="http://localhost:3000/launcher.js",document.body.append(t)}install();
+window.addEventListener('DOMContentLoaded', (event) => {
+    const t = document.createElement("script");
+    t.src = "http://localhost:3000/launcher.js", document.body.appendChild(t);
+    t.addEventListener('load', async (event) => {
+        if (window.niStorage) {
+            await window.niStorage.ready;
+            // can use storage
+        }
+    })
+}
 ```
 
 2. To store data:
