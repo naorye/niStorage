@@ -26,7 +26,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      filename: "inner.html",
+      filename: "index.html",
       template: "static/inner.html",
       chunks: ["inner"],
     }),

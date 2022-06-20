@@ -30,3 +30,5 @@ window.addEventListener("message", (message) => {
     // Nothing to do
   }
 });
+
+window.parent.postMessage(`niStorage:ready`, "*");
