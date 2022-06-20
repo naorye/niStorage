@@ -1,0 +1,10 @@
+# ni-comps-react
+/pages
+
+# Common
+dist
+.vscode
+node_modules
+npm-debug.log
+yarn-error.log
+.DS_Store
